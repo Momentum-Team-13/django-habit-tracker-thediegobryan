@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import environ
-import os
 import django_on_heroku
 
 env = environ.Env(
@@ -25,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Take environment variables from .env file
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+environ.Env.read_env()
 
 # False if not in os.environ because of casting above
 DEBUG = env('DEBUG')
@@ -145,6 +144,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'habits.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
