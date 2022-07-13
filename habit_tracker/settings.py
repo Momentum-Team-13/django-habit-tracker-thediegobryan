@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import environ
 import os
+import django_on_heroku
 
 env = environ.Env(
     # set casting, default value
@@ -20,8 +21,8 @@ env = environ.Env(
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-#BASE_DIR = Path(__file__).resolve().parent.parent
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
+#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Take environment variables from .env file
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
@@ -36,7 +37,6 @@ DEBUG = env('DEBUG')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
-#SECRET_KEY = 'django-insecure-tkyfx6y1ia=e)864b1))34_^xmy*zhhkps3c)1z!x8ba4_pmnh'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -109,10 +109,10 @@ DATABASES = {
     'default': env.db(),
 
     # read os.environ['SQLITE_URL']
-    'extra': env.db_url(
-        'SQLITE_URL',
-        default='sqlite:////tmp/my-tmp-sqlite.db'
-    )
+    # 'extra': env.db_url(
+    #     'SQLITE_URL',
+    #     default='sqlite:////tmp/my-tmp-sqlite.db'
+    # )
 }
 
 # CACHES = {
@@ -167,3 +167,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+django_on_heroku.settings(locals())
+del DATABASES['default']['OPTIONS']['sslmode']
