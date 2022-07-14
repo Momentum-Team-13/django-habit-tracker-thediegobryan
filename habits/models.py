@@ -9,13 +9,13 @@ class User(AbstractUser):
         return self.username
 
 class Habit(models.Model):
-    habit_name = models.CharField(max_length=255, null=True, blank=True)
-    goal = models.PositiveIntegerField(null=True, blank=True)
-    metric = models.CharField(max_length=255, null=True, blank=True)
+    habit_name = models.CharField(max_length=255)
+    goal = models.PositiveIntegerField()
+    metric = models.CharField(max_length=255)
     creator = models.ForeignKey("User", on_delete=models.SET_NULL, related_name='creator', null=True, blank=True)
 
 class Date(models.Model):
-    date = models.DateField(null=True, blank=True)
+    date = models.DateField()
     habit_status = models.PositiveIntegerField(null=True, blank=True)
     tracked_habits = models.ForeignKey("Habit", on_delete=models.SET_NULL, related_name='tracked_habit', null=True, blank=True)
     
