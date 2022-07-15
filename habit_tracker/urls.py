@@ -20,6 +20,8 @@ from habits import views as habit_views
 urlpatterns = [
     path("", habit_views.homepage, name='homepage'),
     path("habits/", habit_views.list_habits, name='list_habits'),
+    path("habits/new_habit", habit_views.new_habit, name='new_habit'),
+    path("habits/status", habit_views.status, name='status'),
     path('accounts/', include('registration.backends.simple.urls')),
     path('admin/', admin.site.urls),
 ]

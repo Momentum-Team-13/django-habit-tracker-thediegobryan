@@ -1,4 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>Habit List</h1>
+<form action="{% url 'auth_logout' %}">
+    <input type="submit" value="Logout" />
+</form>
+<form action="{% url 'new_habit' %}">
+    <input type="submit" value="Add New Habit" />
+</form>
+<form action="{% url 'status' %}">
+    <input type="submit" value="Update Progress" />
+</form>
 {% endblock %}

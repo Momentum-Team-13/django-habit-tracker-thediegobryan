@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'habits'
 ]
 ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
+LOGIN_REDIRECT_URL = '/'
 REGISTRATION_AUTO_LOGIN = True # Automatically log the user in.
 
 MIDDLEWARE = [
