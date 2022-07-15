@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>Habit List</h1>
+<h2>Welcome {{ user }}</h2>
 <form action="{% url 'auth_logout' %}">
     <input type="submit" value="Logout" />
 </form>
@@ -10,4 +11,7 @@
 <form action="{% url 'status' %}">
     <input type="submit" value="Update Progress" />
 </form>
+{% for habit in habits%}
+<p>{{habit.habit_name}} {{habit.goal}} {{habit.metric}} {{habit.creator}}</p>
+{% endfor %}
 {% endblock %}

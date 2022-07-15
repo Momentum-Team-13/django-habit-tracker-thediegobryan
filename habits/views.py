@@ -10,8 +10,9 @@ def homepage(request):
     return render(request, "habits/homepage.html")
 
 def list_habits(request):
-    habits = Habit.objects.all()
-    return render(request, "habits/list_habits.html", {"habits": habits})
+    habits = Habit.objects.filter(creator=request.user)
+    user = request.user
+    return render(request, "habits/list_habits.html", {"habits": habits, "user": user})
 
 def new_habit(request):
     if request.method == 'GET':
