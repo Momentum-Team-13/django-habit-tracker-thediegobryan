@@ -3,6 +3,9 @@
 {% block content %}
 <h1>{{ habit }}</h1>
 {% for habit_entry in habit_entries %}
+    <form action="{% url 'edit_status' pk=habit_entry.pk %}">
+        <input type="submit" value="Update Status" />
+    </form>
     <p>{{ habit_entry }}</p>
 {% endfor%}
 {% endblock %}

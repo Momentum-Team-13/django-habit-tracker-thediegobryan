@@ -9,7 +9,6 @@ def homepage(request):
         return redirect("list_habits")
     return render(request, "habits/homepage.html")
 
-@login_required
 def list_habits(request):
     habits = Habit.objects.filter(creator=request.user)
     user = request.user
@@ -65,4 +64,15 @@ def habit_detail(request, pk):
     habit = get_object_or_404(Habit, pk=pk)
     habit_entries = Date.objects.filter(tracked_habit__creator=request.user, tracked_habit__habit_name=habit.habit_name)
     return render(request, "habits/habit_detail.html",{"habit":habit, "habit_entries":habit_entries})
-    
+
+def edit_status(request, pk):
+    status = get_object_or_404(Date, pk=pk)
+    habit_pk = status.tracked_habit.pk
+    if request.method == 'GET':
+        form = DateForm(instance=status)
+    else:
+        form = DateForm(data = request.POST, instance=status)
+        if form.is_valid():
+            form.save()
+            return redirect(to='habit_detail', pk = habit_pk)
+    return render(request, "habits/edit_status.html", {'form':form, 'status':status})

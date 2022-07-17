@@ -11,7 +11,6 @@ class HabitForm(forms.ModelForm):
             'habit_name',
             'goal',
             'metric',
-            'creator',
         ]
 
 class DateForm(forms.ModelForm):
