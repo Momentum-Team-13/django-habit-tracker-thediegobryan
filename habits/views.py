@@ -44,6 +44,7 @@ def status(request):
     
     return render(request, "habits/status.html", {"form":form})
 
+@login_required
 def status_detail(request,pk, year, month, day):
     status = get_object_or_404(Date, pk=pk)
     status_entries = Date.objects.filter(date=status.date, tracked_habit__creator=request.user)
@@ -56,4 +57,12 @@ def status_detail(request,pk, year, month, day):
         "month":month, 
         "day":day, 
         "status_entries":status_entries
-        })
+        }
+        )
+
+@login_required
+def habit_detail(request, pk):
+    habit = get_object_or_404(Habit, pk=pk)
+    habit_entries = Date.objects.filter(tracked_habit__creator=request.user, tracked_habit__habit_name=habit.habit_name)
+    return render(request, "habits/habit_detail.html",{"habit":habit, "habit_entries":habit_entries})
+    

@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ habit }}</h1>
+{% for habit_entry in habit_entries %}
+    <p>{{ habit_entry }}</p>
+{% endfor%}
+{% endblock %}

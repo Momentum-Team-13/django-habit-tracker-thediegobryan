@@ -14,7 +14,7 @@
 <h2>Your Daily Habits</h2>
 {% for habit in habits%}
 <ul>
-    <li>{{habit.habit_name}} {{habit.goal}} {{habit.metric}}</li>
+    <a href="{% url 'habit_detail' pk=habit.pk %}"><li>{{ habit }}</li></a>
 </ul>
 {% endfor %}
 
@@ -22,7 +22,7 @@
     <h2>Your Previous Status Updates</h2>
     
     {% for date in dates %}
-        <a href="{% url 'status_detail' pk=date.pk year=date.date.year month=date.date.month day=date.date.day%}">{{date}}</a></br>
+        <a href="{% url 'status_detail' pk=date.pk year=date.date.year month=date.date.month day=date.date.day %}">{{date}}</a></br>
     {% endfor %}
 {% endif%}
 {% endblock %}
