@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>Habit List</h1>
-<h2>Welcome {{ user }}</h2>
+<h2>Welcome {{ user }} </h2>
 <form action="{% url 'auth_logout' %}">
     <input type="submit" value="Logout" />
 </form>
@@ -9,9 +9,20 @@
     <input type="submit" value="Add New Habit" />
 </form>
 <form action="{% url 'status' %}">
-    <input type="submit" value="Update Progress" />
+    <input type="submit" value="Add New Status Update" />
 </form>
+<h2>Your Daily Habits</h2>
 {% for habit in habits%}
-<p>{{habit.habit_name}} {{habit.goal}} {{habit.metric}} {{habit.creator}}</p>
+<ul>
+    <li>{{habit.habit_name}} {{habit.goal}} {{habit.metric}}</li>
+</ul>
 {% endfor %}
+
+{% if dates %}
+    <h2>Your Previous Status Updates</h2>
+    
+    {% for date in dates %}
+        <a href="{% url 'status_detail' pk=date.pk year=date.date.year month=date.date.month day=date.date.day%}">{{date}}</a></br>
+    {% endfor %}
+{% endif%}
 {% endblock %}

@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 
 def validate_date(date):
-    if date >= timezone.now().date():
+    if date > timezone.now().date():
         raise ValidationError("Date cannot be in the future")
 
 # Create your models here.
@@ -19,6 +19,9 @@ class Habit(models.Model):
     metric = models.CharField(max_length=255)
     creator = models.ForeignKey("User", on_delete=models.SET_NULL, related_name='habits', null=True, blank=True)
 
+    def __str__(self):
+        return f"{self.habit_name} {self.goal} {self.metric}"
+
 class Date(models.Model):
     date = models.DateField(default=None, validators=[validate_date])
     habit_status = models.PositiveIntegerField()
@@ -28,3 +31,6 @@ class Date(models.Model):
         constraints = [
             UniqueConstraint(fields=["tracked_habit", "date"], name="unique_user_date")
         ]
+    
+    def __str__(self):
+        return f"On {self.date}, You've done {self.habit_status} of {self.tracked_habit }"

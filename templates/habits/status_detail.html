@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ status.date }}</h1>
+{% for status_entry in status_entries %}
+    <p>{{ status_entry }}</p>
+{% endfor%}
+{% endblock %}

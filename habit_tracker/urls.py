@@ -22,6 +22,7 @@ urlpatterns = [
     path("habits/", habit_views.list_habits, name='list_habits'),
     path("habits/new_habit", habit_views.new_habit, name='new_habit'),
     path("habits/status", habit_views.status, name='status'),
+    path("habit/<int:pk>/<year>/<month>/<day>", habit_views.status_detail, name='status_detail'),
     path('accounts/', include('registration.backends.simple.urls')),
     path('admin/', admin.site.urls),
 ]

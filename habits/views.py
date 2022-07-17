@@ -9,25 +9,33 @@ def homepage(request):
         return redirect("list_habits")
     return render(request, "habits/homepage.html")
 
+@login_required
 def list_habits(request):
     habits = Habit.objects.filter(creator=request.user)
     user = request.user
-    return render(request, "habits/list_habits.html", {"habits": habits, "user": user})
+    dates = Date.objects.filter(tracked_habit__creator=request.user).order_by('-date')
+    return render(request, "habits/list_habits.html", {"habits":habits, "user":user, "dates":dates})
 
+@login_required
 def new_habit(request):
     if request.method == 'GET':
         form = HabitForm()
     else:
         form = HabitForm(data = request.POST)
         if form.is_valid():
+            habit = form.save(commit=False)
+            habit.creator = request.user
             form.save()
             return redirect(to='list_habits')
     
     return render(request, "habits/new_habit.html", {"form":form})
 
+@login_required
 def status(request):
+    habits = Habit.objects.filter(creator=request.user)
     if request.method == 'GET':
         form = DateForm()
+        form.fields["tracked_habit"].queryset=habits
     else:
         form = DateForm(data = request.POST)
         if form.is_valid():
@@ -35,3 +43,17 @@ def status(request):
             return redirect(to='list_habits')
     
     return render(request, "habits/status.html", {"form":form})
+
+def status_detail(request,pk, year, month, day):
+    status = get_object_or_404(Date, pk=pk)
+    status_entries = Date.objects.filter(date=status.date, tracked_habit__creator=request.user)
+    year = status.date.year
+    month = status.date.month
+    day = status.date.day
+    return render(request, "habits/status_detail.html", {
+        "status": status, 
+        "year":year,
+        "month":month, 
+        "day":day, 
+        "status_entries":status_entries
+        })
