@@ -11,6 +11,7 @@ django-on-heroku = "*"
 gunicorn = "*"
 django-registration-redux = "*"
 django-extensions = "*"
+django-mathfilters = "*"
 
 [dev-packages]
 
