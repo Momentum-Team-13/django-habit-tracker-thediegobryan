@@ -16,6 +16,9 @@
                         <form class="text-end" action="{% url 'edit_status' pk=date.pk %}">
                             <input class="btn btn-light btn-outline-dark btn-sm" type="submit" value="Update Status" />
                         </form>
+                        <form class="text-end" action="{% url 'delete_status' pk=date.pk %}">
+                            <input class="btn btn-light btn-outline-dark btn-sm" type="submit" value="delete" />
+                        </form>
                     </div>
                 </div>
             <div>

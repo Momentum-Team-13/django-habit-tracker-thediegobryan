@@ -46,7 +46,7 @@ def status(request):
 @login_required
 def status_detail(request,pk, year, month, day):
     status = get_object_or_404(Date, pk=pk)
-    status_entries = Date.objects.filter(date=status.date, tracked_habit__creator=request.user)
+    status_entries = Date.objects.filter(date=status.date, tracked_habit__creator=request.user).order_by('-date')
     year = status.date.year
     month = status.date.month
     day = status.date.day
@@ -62,7 +62,7 @@ def status_detail(request,pk, year, month, day):
 @login_required
 def habit_detail(request, pk):
     habit = get_object_or_404(Habit, pk=pk)
-    habit_entries = Date.objects.filter(tracked_habit__creator=request.user, tracked_habit__habit_name=habit.habit_name)
+    habit_entries = Date.objects.filter(tracked_habit__creator=request.user, tracked_habit__habit_name=habit.habit_name).order_by('-date')
     return render(request, "habits/habit_detail.html",{"habit":habit, "habit_entries":habit_entries})
 
 def edit_status(request, pk):
@@ -76,3 +76,11 @@ def edit_status(request, pk):
             form.save()
             return redirect(to='habit_detail', pk = habit_pk)
     return render(request, "habits/edit_status.html", {'form':form, 'status':status})
+
+def delete_status(request, pk):
+    date = get_object_or_404(Date, pk=pk)
+    if request.method == 'POST':
+        date.delete()
+        return redirect(to='list_habits')
+    
+    return render(request, "habits/delete_status.html", {"date":date})
