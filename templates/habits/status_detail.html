@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load mathfilters %}
+{% block content %}
+<h1 class="text-center">{{ status.date }}</h1>
+
+<ul class="list-group">
+    {% for date in status_entries %}
+        <li class="list-group-item">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6">
+                        <a href="{% url 'status_detail' pk=date.pk year=date.date.year month=date.date.month day=date.date.day %}">{{date.date}}</a>
+                        <p> {{date.tracked_habit.habit_name}} {{date.habit_status}} {{date.tracked_habit.metric}}</p>
+                    </div>
+                    <div class="col-6">
+                        <form class="text-end" action="{% url 'edit_status' pk=date.pk %}">
+                            <input class="btn btn-light btn-outline-dark btn-sm" type="submit" value="Update Status" />
+                        </form>
+                        <form class="text-end" action="{% url 'delete_status' pk=date.pk %}">
+                            <input class="btn btn-light btn-outline-dark btn-sm" type="submit" value="delete" />
+                        </form>
+                    </div>
+                </div>
+            <div>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: {{ date.habit_status|div:date.tracked_habit.goal|mul:100 }}%" aria-valuenow="{{date.habit_status}}" aria-valuemin="0" aria-valuemax="{{date.tracked_habit.goal}}">{{ date.habit_status|div:date.tracked_habit.goal|mul:100 }}%</div>
+            </div>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

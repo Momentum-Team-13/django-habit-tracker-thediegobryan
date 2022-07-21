@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Add Current Progress</h1>
+
+<div>
+  <form action="{% url 'status' %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div>
+      <button type="submit">Update Status</button>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

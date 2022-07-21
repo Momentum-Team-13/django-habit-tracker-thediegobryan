@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load mathfilters %}
+{% block content %}
+
+<h1 class="text-center">Habit Tracker</h1>
+
+<div class="container">
+    <div class="row">
+    <h2>Welcome {{ user }} </h2>
+    <form action="{% url 'auth_logout' %}">
+        <input class="btn btn-light btn-outline-dark btn-sm" type="submit" value="Logout" />
+    </form>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <h3>Your Daily Habits</h3>
+            <form action="{% url 'new_habit' %}">
+                <input class="btn btn-light btn-outline-dark btn-sm" type="submit" value="Add New Habit" />
+            </form>
+            <div class="col-4">
+                <ul class="list-group">
+                    {% for habit in habits%}
+                        <a href="{% url 'habit_detail' pk=habit.pk %}"><li class="list-group-item">{{ habit }}</li></a>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-6">
+            {% if dates %}
+                <h3>Your Previous Status Updates</h3>
+                <form action="{% url 'status' %}">
+                    <input class="btn btn-light btn-outline-dark btn-sm" type="submit" value="Add New Status Update" />
+                </form>
+                <ul class="list-group">
+                    {% for date in dates %}
+                        <li class="list-group-item">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <a href="{% url 'status_detail' pk=date.pk year=date.date.year month=date.date.month day=date.date.day %}">{{date.date}}</a>
+                                        <p> {{date.tracked_habit.habit_name}} {{date.habit_status}} {{date.tracked_habit.metric}}</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <form class="text-end" action="{% url 'edit_status' pk=date.pk %}">
+                                            <input class="btn btn-light btn-outline-dark btn-sm" type="submit" value="Update Status" />
+                                        </form>
+                                        <form class="text-end" action="{% url 'delete_status' pk=date.pk %}">
+                                            <input class="btn btn-light btn-outline-dark btn-sm" type="submit" value="delete" />
+                                        </form>
+                                    </div>
+                                </div>
+                            <div>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: {{ date.habit_status|div:date.tracked_habit.goal|mul:100 }}%" aria-valuenow="{{date.habit_status}}" aria-valuemin="0" aria-valuemax="{{date.tracked_habit.goal}}">{{ date.habit_status|div:date.tracked_habit.goal|mul:100 }}%</div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif%}
+        </div>
+    </div>  
+</div>
+
+{% endblock %}
